@@ -1,0 +1,6 @@
+# file
+secretum.code-workspace
+
+# directory
+test/
+src/__pycache__/
