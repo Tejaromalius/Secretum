@@ -1,3 +1,8 @@
+# Copyright (c) 2023 tejaromalius
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 import base64
 import json
 import logging as log
@@ -33,13 +38,13 @@ class Cypher:
     
     def encrypt(self):
         self.__bakeKey()
-        self.__fernet(encrypt=1)
+        self.__fernetContent(encrypt=1)
         self.__writeContent()
     
     def decrypt(self):
         self.__readContent()
         self.__bakeKey()
-        self.__fernet(decrypt=1)
+        self.__fernetContent(decrypt=1)
 
     def __writeContent(self):
         with open(self.path, "wb") as FILE:
@@ -73,7 +78,7 @@ class Cypher:
         self.key = base64.urlsafe_b64encode(decoded_key)
         log.debug("key is baked")
 
-    def __fernet(self, encrypt=0, decrypt=0):
+    def __fernetContent(self, encrypt=0, decrypt=0):
         try:
             oven = Fernet(self.key)
             log.debug("oven is prepared")
