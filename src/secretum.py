@@ -11,8 +11,9 @@ import sys
 
 from cypher import Cypher
 from database_manager import DatabaseManager
+from interface import Interface
 
-log.basicConfig(level = log.DEBUG, datefmt = "%H:%M:%S", format = "%(asctime)s.%(msecs)02d -- %(levelname)s: %(message)s")
+log.basicConfig(level = log.CRITICAL, datefmt = "%H:%M:%S", format = "%(asctime)s.%(msecs)02d -- %(levelname)s: %(message)s")
 database_path = f"/home/{os.getlogin()}/.config/Secretum/encrypted.db"
 
 if __name__ == "__main__":
@@ -20,6 +21,7 @@ if __name__ == "__main__":
 
     cypher = Cypher(database_path)
     db_manager = DatabaseManager(cypher)
+    interface = Interface(db_manager, cypher)
    
     if Path.exists(database_path):
         log.debug("database exists")
@@ -28,10 +30,4 @@ if __name__ == "__main__":
         log.debug("database doesn't exist")
         db_manager.setupDatabase()
     
-    # while True:
-    #     print(db_manager.getDatabase())
-
-    #     if input("\nAdd new entry?\n> ") in ('y', "yes"):
-    #         db_manager.appendNewEntry()
-    #     else:
-    #         sys.exit(0)
+    interface.run()

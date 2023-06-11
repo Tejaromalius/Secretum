@@ -9,7 +9,7 @@ import logging as log
 import secrets
 import sys
 
-from cryptography import fernet
+from cryptography.fernet import InvalidToken as InvalidTokenError
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 
@@ -62,6 +62,7 @@ class Cypher:
             log.debug(f"\"{self.path}\" file is opened")
 
             file_content = FILE.readlines()
+            
             self.encrypted_content = file_content[0].replace(b'\n', b'')
             log.debug("encrypted content is read from file")
 
@@ -91,7 +92,7 @@ class Cypher:
                 self.decrypted_content = json.loads(oven.decrypt(self.encrypted_content).decode("utf-8"))
                 log.debug("content decryption is complete")
     
-        except fernet.InvalidToken:
+        except InvalidTokenError:
             raise Exception("password is wrong")
     
         except Exception:
